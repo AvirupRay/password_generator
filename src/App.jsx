@@ -1,10 +1,13 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 function App() {
   const [length, setLength] = useState(8);
   const [num, setNum] = useState(false);
   const [char, setChar] = useState(false);
   const [pass, setPass] = useState("");
+  const [copy, setCopy] = useState(false);
+  // ref hook
+  const passwordRef = useRef(null);
 
   const passwordGenerator = useCallback(() => {
     let res = "";
@@ -21,27 +24,41 @@ function App() {
   }, [length, num, char, setPass]);
 
   useEffect(() => {
+    setCopy(false);
     passwordGenerator();
-  }, [length, num, char, setPass]);
+  }, [length, num, char]);
+
+  const copyPass = useCallback(() => {
+    copy ? setCopy(false) : setCopy(true);
+    passwordRef.current?.select();
+    passwordRef.current?.setSelectionRange(0, 30);
+
+    window.navigator.clipboard.writeText(pass);
+  }, [pass]);
 
   return (
     <div className="flex justify-center items-center flex-col gap-10">
       <h1 className=" text-4xl text-center font-mono font-bold text-white mt-5">
         Password Generator
       </h1>
-      <div className=" flex justify-center items-center flex-col gap-2  bg-slate-600 w-3/4 p-5 rounded-lg">
+      <div className=" flex  justify-center items-center flex-col gap-5  bg-slate-600 w-3/4 p-5 rounded-lg">
         {/* text */}
-        <div className=" flex items-center justify-center  w-3/4 p-5 rounded-lg">
+
+        <div className=" flex shadow overflow-hidden items-center justify-center w-1/2 h-10  rounded-full">
           <input
             type="text"
             value={pass}
             placeholder="Password"
-            className=" outline-none w-1/2 rounded-full py-1 px-3 cursor-default"
+            className=" outline-none h-full w-full py-1 px-3 cursor-default"
             readOnly
+            ref={passwordRef}
           />
 
-          <button className="outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0 mx-2 rounded-md">
-            copy
+          <button
+            onClick={copyPass}
+            className="outline-none bg-blue-700 text-white px-4 py-1 shrink-0 h-full w-auto"
+          >
+            {copy ? "copied" : "copy"}
           </button>
         </div>
 
@@ -51,7 +68,7 @@ function App() {
             <input
               type="range"
               min={6}
-              max={100}
+              max={30}
               value={length}
               className=" cursor-pointer"
               onChange={(e) => {
