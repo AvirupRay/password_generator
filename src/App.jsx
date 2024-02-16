@@ -25,13 +25,13 @@ function App() {
   }, [length, num, char, setPass]);
 
   return (
-    <>
+    <div className="flex justify-center items-center flex-col gap-10">
       <h1 className=" text-4xl text-center font-mono font-bold text-white mt-5">
         Password Generator
       </h1>
-      <div className=" flex justify-center items-center flex-col gap-2">
+      <div className=" flex justify-center items-center flex-col gap-2  bg-slate-600 w-3/4 p-5 rounded-lg">
         {/* text */}
-        <div className=" flex items-center justify-center mt-10 bg-slate-600 w-3/4 p-5 rounded-lg">
+        <div className=" flex items-center justify-center  w-3/4 p-5 rounded-lg">
           <input
             type="text"
             value={pass}
@@ -45,7 +45,7 @@ function App() {
           </button>
         </div>
 
-        <div className=" flex text-sm gap-5 justify-center items-center bg-slate-400 w-auto rounded-xl h-10 p-10">
+        <div className=" flex text-sm gap-5 justify-center items-center bg-slate-300 w-auto rounded-xl h-10 p-10">
           {/* range */}
           <div className=" flex items-center gap-1">
             <input
@@ -90,7 +90,7 @@ function App() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
